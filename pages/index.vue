@@ -44,8 +44,10 @@ onMounted(() => {
         }')`,
       }"
     >
-      <Earth v-if="interv" />
-      <TimerCountdown />
+      <ClientOnly>
+        <Earth v-if="interv" />
+        <TimerCountdown />
+      </ClientOnly>
     </div>
 
     <!-- Form -->
