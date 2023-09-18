@@ -37,12 +37,12 @@ onMounted(async () => {
     theme.global.name.value = "light";
     setTimeout(() => {
       colorMode.preference = "light";
-    }, 1000);
+    }, 200);
   } else {
     theme.global.name.value = "dark";
     setTimeout(() => {
       colorMode.preference = "dark";
-    }, 1000);
+    }, 200);
   }
   darkMode.value = theme.current.value.dark;
 });
