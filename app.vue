@@ -1,9 +1,6 @@
-<script setup lang="ts">
-import { useTheme } from "vuetify";
-const theme = useTheme();
-</script>
+<script lang="ts"></script>
 <template>
-  <v-app :class="theme.current.value.dark ? 'dark' : ''">
+  <v-app>
     <NuxtLayout>
       <NuxtPage />
     </NuxtLayout>

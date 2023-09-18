@@ -1,10 +1,29 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  modules: ["@invictus.codes/nuxt-vuetify", "@nuxtjs/tailwindcss"],
+  modules: [
+    "@invictus.codes/nuxt-vuetify",
+    "@nuxtjs/tailwindcss",
+    "@nuxtjs/color-mode",
+  ],
 
   components: ["~/components"],
 
+  plugins: ["~/plugins/axios"],
+
   css: ["@/assets/style/main.scss", "@/assets/style/util.scss"],
+
+  tailwindcss: {
+    configPath: "tailwind.config",
+    exposeConfig: true,
+    exposeLevel: 2,
+    config: {},
+    injectPosition: "first",
+    viewer: true,
+  },
+
+  colorMode: {
+    classSuffix: "",
+  },
 
   vuetify: {
     vuetifyOptions: {
@@ -35,4 +54,10 @@ export default defineNuxtConfig({
   },
 
   devtools: { enabled: true },
+
+  runtimeConfig: {
+    public: {
+      baseURL: process.env.BASE_URL || "https://api.feztool.com/",
+    },
+  },
 });

@@ -12,7 +12,6 @@ import gsap from "gsap";
 import { onMounted } from "vue";
 
 onMounted(() => {
-  const canvas = document.getElementById("globe");
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 
@@ -40,8 +39,10 @@ onMounted(() => {
   );
 
   const sphereMat = new THREE.ShaderMaterial({
-    vertexShader: document.getElementById("vertexShader")?.textContent,
-    fragmentShader: document.getElementById("fragmentShader")?.textContent,
+    vertexShader: <string>document.getElementById("vertexShader")?.textContent,
+    fragmentShader: <string>(
+      document.getElementById("fragmentShader")?.textContent
+    ),
     uniforms: {
       globeTexture: {
         value: globe_image,
@@ -52,10 +53,12 @@ onMounted(() => {
   const sphere = new THREE.Mesh(sphereGeom, sphereMat);
 
   const outerGlowMat = new THREE.ShaderMaterial({
-    vertexShader: document.getElementById("atmosphereVertexShader")
-      ?.textContent,
-    fragmentShader: document.getElementById("atmosphereFragmentShader")
-      ?.textContent,
+    vertexShader: <string>(
+      document.getElementById("atmosphereVertexShader")?.textContent
+    ),
+    fragmentShader: <string>(
+      document.getElementById("atmosphereFragmentShader")?.textContent
+    ),
     side: THREE.BackSide,
   });
 

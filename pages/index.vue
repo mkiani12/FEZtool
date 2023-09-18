@@ -7,11 +7,19 @@ import { onMounted, ref } from "vue";
 import lightBg from "@/assets/images/bg06.jpg";
 import darkBg from "@/assets/images/bg05.jpg";
 
+useSeoMeta({
+  title: "Feztool",
+  ogTitle: "Feztool is Free and Easy",
+  description: "Feztool is coming soon",
+  ogDescription: "Feztool is coming soon",
+});
+
 const theme = useTheme();
 
 const start = moment().startOf("day").add(6, "hours");
 const end = moment().startOf("day").add(18, "hours");
 
+const colorMode = useColorMode();
 let darkMode = ref(theme.current.value.dark);
 const interv = ref(true);
 
@@ -21,13 +29,16 @@ const changeMode = () => {
     interv.value = true;
   }, 10);
   theme.global.name.value = darkMode.value ? "dark" : "light";
+  colorMode.preference = darkMode.value ? "dark" : "light";
 };
 
-onMounted(() => {
+onMounted(async () => {
   if (moment().isBetween(start, end)) {
     theme.global.name.value = "light";
+    colorMode.preference = "light";
   } else {
     theme.global.name.value = "dark";
+    colorMode.preference = "dark";
   }
   darkMode.value = theme.current.value.dark;
 });
@@ -57,53 +68,27 @@ onMounted(() => {
           v-if="theme.current.value.dark"
           src="@/assets/images/logo/Logo_White.png"
           alt="LOGO"
-          class="float-left mt-1"
+          class="float-left mt-1 mr-5"
           style="max-width: 90px"
         />
         <img
           v-else
           src="@/assets/images/logo/Logo_Black.png"
           alt="LOGO"
-          class="float-left mt-1"
+          class="float-left mt-1 mr-5"
           style="max-width: 90px"
         />
         <v-switch
           v-model="darkMode"
           color="pink-accent-2"
-          class="ml-5 float-left"
+          class="float-left"
           append-icon="mdi-weather-night"
           inset
           @change="changeMode"
         ></v-switch>
       </div>
 
-      <div class="p-t-50 p-b-60">
-        <p class="m1-txt1 p-b-36">
-          <span class="m1-txt2">FEZtool</span> is Coming. For more information
-          follow us now! ;)
-        </p>
-
-        <v-form>
-          <v-text-field
-            clearable
-            label="Your Name"
-            variant="outlined"
-            density="compact"
-          ></v-text-field>
-          <v-text-field
-            clearable
-            label="Email Address"
-            variant="outlined"
-            density="compact"
-          ></v-text-field>
-
-          <v-btn color="pink-accent-2" size="large" block>Subscribe</v-btn>
-        </v-form>
-
-        <p class="s2-txt3 p-t-18">
-          And don’t worry, we hate spam too! You can unsubcribe at anytime.
-        </p>
-      </div>
+      <Subscribe />
 
       <div class="flex-w">
         <v-btn
@@ -124,6 +109,7 @@ onMounted(() => {
         </v-btn>
       </div>
     </div>
+
     <EarthRender />
   </div>
 </template>
