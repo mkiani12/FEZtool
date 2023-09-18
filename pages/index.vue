@@ -35,10 +35,14 @@ const changeMode = () => {
 onMounted(async () => {
   if (moment().isBetween(start, end)) {
     theme.global.name.value = "light";
-    colorMode.preference = "light";
+    setTimeout(() => {
+      colorMode.preference = "light";
+    }, 1000);
   } else {
     theme.global.name.value = "dark";
-    colorMode.preference = "dark";
+    setTimeout(() => {
+      colorMode.preference = "dark";
+    }, 1000);
   }
   darkMode.value = theme.current.value.dark;
 });
