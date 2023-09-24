@@ -1,8 +1,7 @@
 <script setup lang="ts">
+import { onMounted, ref } from "vue";
 import { useTheme } from "vuetify";
 import moment from "moment-jalaali";
-
-import { onMounted, ref } from "vue";
 
 import lightBg from "@/assets/images/bg06.jpg";
 import darkBg from "@/assets/images/bg05.jpg";
@@ -16,36 +15,45 @@ useSeoMeta({
 
 const theme = useTheme();
 
-const start = moment().startOf("day").add(6, "hours");
-const end = moment().startOf("day").add(18, "hours");
+const startTime = moment().startOf("day").add(6, "hours");
+const endTime = moment().startOf("day").add(18, "hours");
 
 const colorMode = useColorMode();
 let darkMode = ref(theme.current.value.dark);
-const interv = ref(true);
 
-const changeMode = () => {
-  interv.value = false;
-  setTimeout(() => {
-    interv.value = true;
-  }, 10);
-  theme.global.name.value = darkMode.value ? "dark" : "light";
-  colorMode.preference = darkMode.value ? "dark" : "light";
-};
+const reRenderFlag = ref(true);
 
-onMounted(async () => {
-  if (moment().isBetween(start, end)) {
+// dev functions
+
+const checkTimeSetDarkMode = async () => {
+  if (moment().isBetween(startTime, endTime)) {
     theme.global.name.value = "light";
     setTimeout(() => {
       colorMode.preference = "light";
-    }, 200);
+    }, 100);
   } else {
     theme.global.name.value = "dark";
     setTimeout(() => {
       colorMode.preference = "dark";
-    }, 200);
+    }, 100);
   }
   darkMode.value = theme.current.value.dark;
+};
+
+onMounted(async () => {
+  checkTimeSetDarkMode();
 });
+
+// user functions
+const changeMode = () => {
+  theme.global.name.value = darkMode.value ? "dark" : "light";
+  colorMode.preference = darkMode.value ? "dark" : "light";
+
+  reRenderFlag.value = false;
+  setTimeout(() => {
+    reRenderFlag.value = true;
+  }, 10);
+};
 </script>
 
 <template>
@@ -60,7 +68,7 @@ onMounted(async () => {
       }"
     >
       <ClientOnly>
-        <Earth v-if="interv" />
+        <Earth v-if="reRenderFlag" />
         <TimerCountdown />
       </ClientOnly>
     </div>

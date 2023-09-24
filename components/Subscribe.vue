@@ -2,18 +2,21 @@
 import { ref } from "vue";
 const { $axios } = useNuxtApp();
 
-const pattern =
+const mailPattern =
   /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
 
-const form = ref(null);
+// form controls
+const formRef = ref(null);
 const formValid = ref(false);
 
+// form Data
 const name = ref(null);
 const email = ref(null);
 
-const snackbar = ref(false);
+// notify
+const showSnackbar = ref(false);
 const snackbarTimeout = ref(3000);
-let resText = "";
+let notifyText = ref("");
 
 const loading = ref(false);
 
@@ -23,22 +26,25 @@ const formSubmit = async () => {
 
   try {
     const { data } = await $axios.post("/auth/register", formData);
-    resText = data;
-    snackbar.value = true;
-    form.value.reset();
+    notifyText.value = data;
+
+    showSnackbar.value = true;
+    formRef.value.reset();
   } catch (error) {
     if (error.response) {
-      resText = error.response.data;
-      snackbar.value = true;
+      notifyText.value = error.response.data;
+      showSnackbar.value = true;
     } else {
       snackbarTimeout.value = 15000;
-      resText = `If you see this message, check your network. 
+
+      notifyText.value = `If you see this message, check your network. 
         <br>
         if you're ok then please text me in
-        <a class="text-blue-300 dark:text-blue-800" href='mailto: mohmmd@skiff.com'> mohmmd@skiff.com :)) </a>
+        <a class="text-blue-300 dark:text-blue-800" href='mailto: mohmmd@skiff.com'> mohmmd@skiff.com </a>
         <br>
-        it has to be checked`;
-      snackbar.value = true;
+        it has to be checked :))`;
+
+      showSnackbar.value = true;
       setTimeout(() => {
         snackbarTimeout.value = 3000;
       }, 15000);
@@ -54,7 +60,7 @@ const formSubmit = async () => {
       follow us now! ;)
     </p>
 
-    <v-form ref="form" v-model="formValid">
+    <v-form ref="formRef" v-model="formValid">
       <v-text-field
         v-model="name"
         class="mb-2"
@@ -69,7 +75,7 @@ const formSubmit = async () => {
         class="mb-2"
         :rules="[
           (v) => !!v || 'Email is required',
-          (v) => pattern.test(v) || 'Email is incurrect',
+          (v) => mailPattern.test(v) || 'Email is incurrect',
         ]"
         clearable
         label="Email Address"
@@ -94,14 +100,14 @@ const formSubmit = async () => {
     </p>
 
     <v-snackbar
-      v-model="snackbar"
+      v-model="showSnackbar"
       location="bottom left"
       class="mb-5 ml-5"
       :timeout="snackbarTimeout"
     >
-      <span v-html="resText"></span>
+      <span v-html="notifyText"></span>
       <template v-slot:actions>
-        <v-btn color="pink" variant="text" @click="snackbar = false">
+        <v-btn color="pink" variant="text" @click="showSnackbar = false">
           Close
         </v-btn>
       </template>

@@ -1,17 +1,15 @@
 <script setup lang="ts">
+import { onMounted } from "vue";
 import { useTheme } from "vuetify";
-
-const theme = useTheme();
+import * as THREE from "three";
+import gsap from "gsap";
 
 import EarthNigthTexture from "@/assets/images/texture/earth_nightmap.jpg";
 import EarthDayTexture from "@/assets/images/texture/earth_daymap.jpg";
 
-import * as THREE from "three";
-import gsap from "gsap";
+const theme = useTheme();
 
-import { onMounted } from "vue";
-
-onMounted(() => {
+const renderEarth = () => {
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(75, 1, 0.1, 1000);
 
@@ -95,9 +93,13 @@ onMounted(() => {
   animate();
 
   addEventListener("mousemove", (event) => {
-    mouse.x = (event.clientX / innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / innerHeight) * 2 - 1;
+    mouse.x = (event.clientX / innerWidth) * 5 - 1;
+    mouse.y = -(event.clientY / innerHeight) * 5 - 1;
   });
+};
+
+onMounted(() => {
+  renderEarth();
 });
 </script>
 <template>

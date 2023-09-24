@@ -3,10 +3,10 @@ import { ref } from "vue";
 import VueCountdown from "@chenfengyuan/vue-countdown";
 import moment from "moment-jalaali";
 
-const target = moment("1402/8/18", "jYYYY/jM/jD");
+const targetDate = moment("1402/8/18", "jYYYY/jM/jD");
 const now = moment();
-const diff = target.diff(now);
-const timeleft = ref(moment(diff).format("x") * 1);
+const diff = targetDate.diff(now);
+const timeleft = ref(parseInt(moment(diff).format("x")));
 </script>
 
 <template>
