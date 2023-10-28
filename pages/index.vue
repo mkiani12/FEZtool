@@ -8,7 +8,7 @@ import darkBg from "@/assets/images/bg05.jpg";
 
 useSeoMeta({
   title: "Feztool",
-  ogTitle: "Feztool is Free and Easy",
+  ogTitle: "Feztool; Free and Easy",
   description: "Feztool is coming soon",
   ogDescription: "Feztool is coming soon",
 });
