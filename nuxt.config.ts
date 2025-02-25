@@ -1,3 +1,9 @@
+import * as dotenv from "dotenv";
+dotenv.config({
+  path: `./.env`,
+  override: false,
+});
+
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
   modules: [
@@ -56,7 +62,7 @@ export default defineNuxtConfig({
 
   runtimeConfig: {
     public: {
-      baseURL: process.env.BASE_URL || "https://api.feztool.com/",
+      baseURL: process.env.BASE_URL || "",
     },
   },
 });
